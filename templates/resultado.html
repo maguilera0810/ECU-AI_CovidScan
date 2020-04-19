@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link class="jsbin" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ECU-AI CovidScan</title>
+
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', {
+            'packages': ['bar']
+        });
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            var pred = '{{ pred }}'
+            console.log(pred)
+            var prediction = ['{{ pred[0] }}', '{{ pred[1] }}', '{{ pred[2] }}'];
+            console.log(prediction)
+            var data = google.visualization.arrayToDataTable([
+                ['Year', 'Porcentaje'],
+                ['covid-19', parseFloat(prediction[0]) * 100],
+                ['pneumonia', parseFloat(prediction[1]) * 100],
+                ['normal', parseFloat(prediction[2]) * 100]
+            ]);
+
+
+
+            var options = {
+                chart: {
+                    title: 'Resultados ',
+                    subtitle: 'Probabilidad de cada diagnostico',
+                },
+                bar: {
+                    groupWidth: "70%"
+                },
+                legend: {
+                    position: "none"
+                },
+            };
+
+            console.log(document.getElementById('columnchart_material'))
+            var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
+
+            chart.draw(data, google.charts.Bar.convertOptions(options));
+        }
+    </script>
+
+
+    <style>
+        #imagen {
+            width: 25vw;
+            height: 70vh;
+            align-content: center;
+        }
+        
+        #logo {
+            /* width: 25vw; */
+            margin-left: -10vw;
+            height: 10vh;
+            align-content: flex-start;
+        }
+        
+        #data {
+            margin-top: 5vh;
+        }
+    </style>
+
+
+
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+
+            <div class="container">
+                <a class="navbar-brand" href="{{url_for('index')}}">
+
+                    <img id="logo" src="{{url_for('static', filename='images/logo.jpeg')}}" />
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                                                          <span class="navbar-toggler-icon"></span>
+                                                        </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item  active">
+                            <a class="nav-link" href="{{url_for('index')}}">
+                                <h1>
+                                    Home
+                                </h1>
+                                <span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="salir" href="{{url_for('list_db')}}">
+                                <h2>
+                                    Base Datos
+
+                                </h2>
+
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="salir" href="{{url_for('index')}}">
+                                <h2>
+                                    Logout
+
+                                </h2>
+
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container " id='data' style="margin-left: 10vw;">
+        <div class="row " style="width: 80vw;">
+            <div class="col-lg-3 ">
+                <div class="card ">
+                    <div class="card-header ">
+                        <h4 class="display-6 ">Datos</h4>
+                    </div>
+                    <div class="card-body ">
+                        <form>
+                            <div class="form-group ">
+                                <label for="fname ">Nombres</label>
+                                <input type="text " class="form-control " id="fname " name="fname " placeholder="First name " value="{{fname}} " disabled>
+                            </div>
+                            <div class="form-group ">
+                                <label for="lname ">Apellidos</label>
+                                <input type="text " class="form-control " id="lname " name="lname " placeholder="Last name " value="{{lname}} " disabled>
+                            </div>
+                            <div class="form-group ">
+                                <label for="cedula ">Cédula</label>
+                                <input type="text " class="form-control " id="cedula " name="cedula " placeholder="Last name " value="{{cedula}} " disabled>
+                            </div>
+                            <!-- <div class="form-group ">
+                                <label for="date ">Date</label>
+                                <input type="date " class="form-control " id="date " name="date " value="{{date}} " disabled>
+                            </div> -->
+                            <div class="form-group ">
+                                <label for="diagnostico ">Diagnostico</label>
+                                <input type="text " class="form-control " id="diagnostico " name="diagnostico " placeholder="Last name " value="{{diagnostico}} " disabled>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 ">
+                <img id="imagen" src="{{ url_for('static', filename=imagen)}}" alt="your image " />
+
+            </div>
+
+            <div class="col-lg-5 ">
+                <div id='columnchart_material' style="width: 25vw; height: 50vh; ">
+                </div>
+            </div>
+
+        </div>
+
+</body>
+
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ECU-AI CovidScan</title>
+    <script>
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#blah').attr('src', e.target.result).width(60).height(100);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+    <style>
+        #imagen {
+            /* width: 25vw; */
+            height: 70vh;
+            align-content: center;
+        }
+        
+        #logo {
+            /* width: 25vw; */
+            margin-left: -10vw;
+            height: 10vh;
+            align-content: flex-start;
+        }
+        
+        #data {
+            margin-top: 5vh;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+
+            <div class="container">
+                <a class="navbar-brand" href="{{url_for('index')}}">
+
+                    <img id="logo" src="{{url_for('static', filename='images/logo.jpeg')}}" />
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                                          <span class="navbar-toggler-icon"></span>
+                                        </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{url_for('index')}}">
+                                <h2>
+                                    Home
+                                </h2>
+                                <span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" id="salir" href="{{url_for('list_db')}}">
+                                <h1>
+                                    Base Datos
+
+                                </h1>
+
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="salir" href="{{url_for('index')}}">
+                                <h2>
+                                    Logout
+
+                                </h2>
+
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div>
+        <div class="card ">
+            <div class="card-header" style="text-align: center;">
+                <h2 class="display-6 ">Filtros</h2>
+            </div>
+            <div class="card-body ">
+                <form>
+                    <div class="form-row ">
+
+                        <div class="form-group col-lg-4">
+                            <label for="fname ">Nombre</label>
+                            <input type="text " class="form-control " id="fname " name="fname " placeholder="Nombre">
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <label for="lname ">Apellido</label>
+                            <input type="text " class="form-control " id="lname " name="lname " placeholder="Apellido">
+                        </div>
+                        <div class="form-group col-lg-2">
+                            <label for="cedula ">Cédula</label>
+                            <input type="text " class="form-control " id="cedula " name="cedula " placeholder="Cedula">
+                        </div>
+                        <div class="form-group col-lg-2">
+                            <label for="diagnostico ">Diagnostico</label>
+                            <select id="diagnostico" class="custom-select" name="diagnostico">
+                                <option selected>Escoja</option>
+                                <option value="0">Negativo</option>
+                                <option value="1">Positivo</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="container" style="width: 80vw; margin-left: 10vw;text-align: center;">
+        <table class="table table-hover table-dark" style="width: 80vw;">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Apellidos</th>
+                    <th scope="col">Nombres</th>
+                    <th scope="col">Cédula</th>
+                    <th scope="col">Diagnostico Covid-19</th>
+                    <th scope="col">Historial</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>Aguilera </td>
+                    <td>Mauricio </td>
+                    <td>999999999</td>
+                    <td>Negativo</td>
+                    <td><a href="#">Ver historial</a></td>
+                </tr>
+                <tr>
+                    <th scope="row">2</th>
+                    <td>Estrada</td>
+                    <td>Otto</td>
+                    <td>1234567890</td>
+                    <td>Positivo</td>
+                    <td><a href="#">Ver historial</a></td>
+                </tr>
+                <tr>
+                    <th scope="row">3</th>
+                    <td>Lozada</td>
+                    <td>Larry </td>
+                    <td>0913764285</td>
+                    <td>Negativo</td>
+                    <td><a href="#">Ver historial</a></td>
+                </tr>
+                <tr>
+                    <th scope="row">4</th>
+                    <td>Aguirre</td>
+                    <td>Lalo </td>
+                    <td>0919822284</td>
+                    <td>Negativo</td>
+                    <td><a href="#">Ver historial</a></td>
+                </tr>
+                <tr>
+                    <th scope="row">5</th>
+                    <td>Astudillo</td>
+                    <td>Enrique</td>
+                    <td>0111111111</td>
+                    <td>Positivo</td>
+                    <td><a href="#">Ver historial</a></td>
+                </tr>
+                <tr>
+                    <th scope="row">6</th>
+                    <td>Aguilera </td>
+                    <td>Mauricio </td>
+                    <td>999999999</td>
+                    <td>Negativo</td>
+                    <td><a href="#">Ver historial</a></td>
+                </tr>
+                <tr>
+                    <th scope="row">7</th>
+                    <td>Estrada</td>
+                    <td>Otto</td>
+                    <td>1234567890</td>
+                    <td>Positivo</td>
+                    <td><a href="#">Ver historial</a></td>
+                </tr>
+                <tr>
+                    <th scope="row">8</th>
+                    <td>Lozada</td>
+                    <td>Larry </td>
+                    <td>0913764285</td>
+                    <td>Negativo</td>
+                    <td><a href="#">Ver historial</a></td>
+                </tr>
+                <tr>
+                    <th scope="row">9</th>
+                    <td>Aguirre</td>
+                    <td>Lalo </td>
+                    <td>0919822284</td>
+                    <td>Negativo</td>
+                    <td><a href="#">Ver historial</a></td>
+                </tr>
+                <tr>
+                    <th scope="row">10</th>
+                    <td>López</td>
+                    <td>Ruperto </td>
+                    <td>0918532862</td>
+                    <td>Negativo</td>
+                    <td><a href="#">Ver historial</a></td>
+                </tr>
+                <tr>
+                    <th scope="row">11</th>
+                    <td>Astudillo</td>
+                    <td>Enrique</td>
+                    <td>0111111111</td>
+                    <td>Positivo</td>
+                    <td><a href="#">Ver historial</a></td>
+                </tr>
+                <tr>
+                    <th scope="row">12</th>
+                    <td>López</td>
+                    <td>Ruperto </td>
+                    <td>0918532862</td>
+                    <td>Negativo</td>
+                    <td><a href="#">Ver historial</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>

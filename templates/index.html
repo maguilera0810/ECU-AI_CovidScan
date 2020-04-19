@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ECU-AI CovidScan</title>
+    <script>
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#blah').attr('src', e.target.result).width(60).height(100);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+    <style>
+        #imagen {
+            /* width: 25vw; */
+            height: 70vh;
+            align-content: center;
+        }
+        
+        #logo {
+            /* width: 25vw; */
+            margin-left: -10vw;
+            height: 10vh;
+            align-content: flex-start;
+        }
+        
+        #data {
+            margin-top: 5vh;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+
+            <div class="container">
+                <a class="navbar-brand" href="{{url_for('index')}}">
+
+                    <img id="logo" src="{{url_for('static', filename='images/logo.jpeg')}}" />
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                                                  <span class="navbar-toggler-icon"></span>
+                                                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item  active">
+                            <a class="nav-link" href="{{url_for('index')}}">
+                                <h1>
+                                    Home
+                                </h1>
+                                <span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="salir" href="{{url_for('list_db')}}">
+                                <h2>
+                                    Base Datos
+
+                                </h2>
+
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="salir" href="{{url_for('index')}}">
+                                <h2>
+                                    Logout
+
+                                </h2>
+
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container" style="width: 80vw; margin-left: 10vw; margin-top: 5% !important; ">
+        <form action="/uploader" method="POST" enctype="multipart/form-data">
+            <div class="card bg-light" style="width: 80vw;">
+                <div class="card-header bg-info" style="text-align: center;">
+                    <h4 class="display-6 ">
+                        DATOS DE IDENTIFICACIÓN DEL PACIENTE
+                    </h4>
+                </div>
+                <div class="card-body ">
+                    <div class="form-row">
+                        <div class="form-group col-md-auto">
+                            <label for="apPaterno">Apellido Paterno</label>
+                            <input type="text" class="form-control" id="apPaterno" name="apPaterno">
+                        </div>
+                        <div class="form-group col-md-auto">
+                            <label for="apMaterno">Apellido Materno</label>
+                            <input type="text" class="form-control" id="apMaterno" name="apMaterno">
+                        </div>
+                        <div class="form-group col-md-auto">
+                            <label for="primNombre">Primer Nombre</label>
+                            <input type="text" class="form-control" id="primNombre" name="primNombre">
+                        </div>
+                        <div class="form-group col-md-auto">
+                            <label for="segNombre">Segundo Nombre</label>
+                            <input type="text" class="form-control" id="segNombre" name="segNombre">
+                        </div>
+                        <div class="form-group col-md-auto">
+                            <label for="cedula">Cédula</label>
+                            <input type="text" class="form-control" id="cedula" name="cedula">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="residencia">Direc. Residencia</label>
+                            <input type="text" class="form-control" id="residencia" name="residencia">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="barrio">Barrio</label>
+                            <input type="text" class="form-control" id="barrio" name="barrio">
+                        </div>
+                        <div class="form-group col-md-1">
+                            <label for="parroquia">Parroquia</label>
+                            <input type="text" class="form-control" id="parroquia" name="parroquia">
+                        </div>
+                        <div class="form-group col-md-1">
+                            <label for="canton">Cantón</label>
+                            <input type="text" class="form-control" id="canton" name="canton">
+                        </div>
+                        <div class="form-group col-md-1">
+                            <label for="provincia">Provincia</label>
+                            <input type="text" class="form-control" id="provincia" name="provincia">
+                        </div>
+                        <div class="form-group col-md-1">
+                            <label for="zona">Zona</label>
+                            <input type="text" class="form-control" id="zona" name="zona">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="tlfn">Tlfn.</label>
+                            <input type="text" class="form-control" id="tlfn" name="tlfn">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-2">
+                            <label for="fechaNacim">Fecha Nacimiento</label>
+                            <input class="form-control" type="date" value="2011-08-19" id="fechaNacim" name="fechaNacim">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="lugNacim">Lugar Nacimiento</label>
+                            <input type="text" class="form-control" id="lugNacim" name="lugNacim">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="nacionalidad">Nacionalidad</label>
+                            <input type="text" class="form-control" id="nacionalidad" name="nacionalidad">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="grupCult">Grupo Cultural</label>
+                            <input type="text" class="form-control" id="grupCult" name="grupCult">
+                        </div>
+                        <div class="form-group col-md-1">
+                            <label for="edad">Edad</label>
+                            <input type="text" class="form-control" id="edad" name="edad">
+                        </div>
+                        <div class="form-group col-md-1">
+                            <label for="sexo">Sexo</label>
+                            <select id="sexo" class="custom-select" name="sexo">
+                            <option selected>Escoja</option>
+                            <option value="1">M</option>
+                            <option value="2">F</option>
+                        </select>
+                        </div>
+                        <div class="form-group col-md-1">
+                            <label for="estadoCivil">Estado Civil</label>
+                            <select id="estadoCivil" class="custom-select" name="estadoCivil">
+                                <option selected>Escoja</option>
+                                <option value="1">Sol</option>
+                                <option value="2">Cas</option>
+                                <option value="3">Div</option>
+                                <option value="4">Viu</option>
+                                <option value="5">U-L</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-1">
+                            <label for="instruccion">Instrucción</label>
+                            <input type="text" class="form-control" id="instruccion" name="instruccion">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-auto">
+                            <label for="fechaAdmin">Fecha Admision</label>
+                            <input class="form-control" type="date" value="2011-08-19" id="fechaAdmin" name="fechaAdmin">
+                        </div>
+                        <div class="form-group col-md-auto">
+                            <label for="ocupacion">Ocupacion</label>
+                            <input type="text" class="form-control" id="ocupacion" name="ocupacion">
+                        </div>
+                        <div class="form-group col-md-auto">
+                            <label for="empresaTrab">Empresa donde Trabaja</label>
+                            <input type="text" class="form-control" id="empresaTrab" name="empresaTrab">
+                        </div>
+                        <div class="form-group col-md-auto">
+                            <label for="segSalud">Tipo Seguro Salud</label>
+                            <input type="text" class="form-control" id="segSalud" name="segSalud">
+                        </div>
+                        <div class="form-group col-md-auto">
+                            <label for="refDe">Referido de</label>
+                            <input type="text" class="form-control" id="refDe" name="refDe">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="avisarA">En Caso Necesario Avisar A</label>
+                            <input type="text" class="form-control" id="avisarA" name="avisarA">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="parentesco">Perentesco-Afinidad</label>
+                            <input type="text" class="form-control" id="parentesco" name="parentesco">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="direccionContacto">Direccion</label>
+                            <input type="text" class="form-control" id="direccionContacto" name="direccionContacto">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="tlfnContacto">Telefono</label>
+                            <input type="text" class="form-control" id="tlfnContacto" name="tlfnContacto">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <label for="formaLlegada">Forma de Llegada</label>
+                            <select id="formaLlegada" class="custom-select" name="formaLlegada">
+                            <option selected>Escoja</option>
+                            <option value="1">Ambulatorio</option>
+                            <option value="2">Ambulancia</option>
+                            <option value="3">Otro Transporte</option>
+                        </select>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="fuenteInformacion">Fuente de Informacion</label>
+                            <input type="text" class="form-control" id="fuenteInformacion" name="fuenteInformacion">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="enteEntrega">Ente que entrega al Paciente</label>
+                            <input type="text" class="form-control" id="enteEntrega" name="enteEntrega">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="tlfnEnte">Telefono</label>
+                            <input type="text" class="form-control" id="tlfnEnte" name="tlfnEnte">
+                        </div>
+                    </div>
+                </div>
+                <div class="card-header bg-info" style="text-align: center;">
+                    <h4 class="display-6 ">
+                        MOTIVO DE CONSULTA
+                    </h4>
+                </div>
+                <div class="card-body ">
+
+
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="motivConsulta">Motivo de Consulta</label>
+                            <select id="motivConsulta" class="custom-select" name="motivConsulta">
+                            <option selected>Escoja</option>
+                            <option value="1">Trauma</option>
+                            <option value="2">Causa Clinica</option>
+                            <option value="3">Causa G. Obstetrica</option>
+                            <option value="4">Causa Quirurgica</option>
+                            <option value="5">Notificacion a la Policia</option>
+                        </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="otromotivo">Otro Motivo</label>
+                            <input type="text" class="form-control" id="otromotivo" name="otromotivo">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="grupoSanguineo">Grupo Sanguineo y Factor RH</label>
+                            <input type="text" class="form-control" id="grupoSanguineo" name="grupoSanguineo">
+                        </div>
+                    </div>
+                </div>
+                <div class="card-header bg-info" style="text-align: center;">
+                    <h4 class="display-6 ">
+                        ANTECEDENTES PERSONALES Y FAMILIARES PATOLÓGICOS
+                    </h4>
+                    <h6 class="card-subtitle mb-2 text-muted"> DESCRIBIR ABAJO, REGISTRANDO EL NÚMERO RESPECTIVO</h6>
+                </div>
+                <div class="card-body ">
+
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="alergia">Alergico</label>
+                            <input type="text" class="form-control" id="alergia" name="alergia">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="clinico">Clinico</label>
+                            <input type="text" class="form-control" id="clinico" name="clinico">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="ginecologico">Ginecologico</label>
+                            <input type="text" class="form-control" id="ginecologico" name="ginecologico">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="traumatologico">Traumatologico</label>
+                            <input type="text" class="form-control" id="traumatologico" name="traumatologico">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="quirurgico">Quirurgico</label>
+                            <input type="text" class="form-control" id="quirurgico" name="quirurgico">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="farmacologico">Farmacologico</label>
+                            <input type="text" class="form-control" id="farmacologico" name="farmacologico">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="psiquiatrico">Psiquiatrico</label>
+                            <input type="text" class="form-control" id="psiquiatrico" name="psiquiatrico">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="otro">Otro</label>
+                            <input type="text" class="form-control" id="otro" name="otro">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-header bg-info" style="text-align: center;">
+                    <h4 class="display-6 ">
+                        ENFERMEDAD ACTUAL Y REVISIÓN DE SISTEMAS
+                    </h4>
+                    <h6 class="card-subtitle mb-2 text-muted">DESCRIBIR: CRONOLOGÍA (FECHAS ACTUALES) - LOCALIZACIÓN - CARACTERÍSTICAS - INTENSIDAD – FRECUENCIA- FACTORES AGRAVANTES</h6>
+                </div>
+
+                <div class="card-body ">
+
+
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="viaAereaLibre">Via Aerea Libre</label>
+                            <input type="text" class="form-control" id="viaAereaLibre" name="viaAereaLibre">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="viaAereaObstruida">Via Aerea Obstruida</label>
+                            <input type="text" class="form-control" id="viaAereaObstruida" name="viaAereaObstruida">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="condEstable">Condicion Estable</label>
+                            <input type="text" class="form-control" id="condEstable" name="condEstable">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="condInestable">Condicion Inestable</label>
+                            <input type="text" class="form-control" id="condInestable" name="condInestable">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="card-header bg-info" style="text-align: center;">
+                    <h4 class="display-6 ">
+                        SIGNOS VITALES
+                    </h4>
+                    <h6 class="card-subtitle mb-2 text-muted">GLASGOW</h6>
+                </div>
+                <div class="card-body ">
+
+                    <div class="form-row">
+                        <div class="form-group col-md-auto">
+                            <label for="ocular">Ocular</label>
+                            <input type="text" class="form-control" id="ocular" name="ocular">
+                        </div>
+                        <div class="form-group col-md-auto">
+                            <label for="verbal">Verbal</label>
+                            <input type="text" class="form-control" id="verbal" name="verbal">
+                        </div>
+                        <div class="form-group col-md-auto">
+                            <label for="motora">Motora</label>
+                            <input type="text" class="form-control" id="motora" name="motora">
+                        </div>
+                        <div class="form-group col-md-auto">
+                            <label for="total">Total</label>
+                            <input type="text" class="form-control" id="total" name="total">
+                        </div>
+                        <div class="form-group col-md-auto">
+                            <label for="pupilDer">Reaccion Pupila Der</label>
+                            <input type="text" class="form-control" id="pupilDer" name="pupilDer">
+                        </div>
+                        <div class="form-group col-md-auto">
+                            <label for="pupilIzq">Reaccion Pupila Izq</label>
+                            <input type="text" class="form-control" id="pupilIzq" name="pupilIzq">
+                        </div>
+                        <div class="form-group col-md-auto">
+                            <label for="satOxigeno">Saturacion Oxigeno</label>
+                            <input type="text" class="form-control" id="satOxigeno" name="satOxigeno">
+                        </div>
+                    </div>
+
+                    <h6 class="card-subtitle mb-2 text-muted" style="text-align: center;">REGISTRAR ABAJO EL NOMBRE Y LOS HALLAZGOS PATOLÓGICOS</h6>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="viaAereaObs">Via Aerea Obstruida</label>
+                            <input type="text" class="form-control" id="viaAereaObs" name="viaAereaObs">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="cabeza">Cabeza</label>
+                            <input type="text" class="form-control" id="cabeza" name="cabeza">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="cuello">Cuello</label>
+                            <input type="text" class="form-control" id="cuello" name="cuello">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="torax">Torax</label>
+                            <input type="text" class="form-control" id="torax" name="torax">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="abdomen">Abdomen</label>
+                            <input type="text" class="form-control" id="abdomen" name="abdomen">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="columna">Columna</label>
+                            <input type="text" class="form-control" id="columna" name="columna">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="pelvis">Pelvis</label>
+                            <input type="text" class="form-control" id="pelvis" name="pelvis">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="extremidades">Extremidades</label>
+                            <input type="text" class="form-control" id="extremidades" name="extremidades">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-header bg-info" style="text-align: center;">
+                    <h4 class="display-6 ">
+                        LOCALIZACION DE LESIONES
+                    </h4>
+                </div>
+
+                <div class="card-body ">
+
+
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="heridaPenetrante" value="1" name="heridaPenetrante">
+                        <label class="form-check-label" for="heridaPenetrante">Herida Penetrante</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="heridaCortante" value="2" name="heridaCortante">
+                        <label class="form-check-label" for="heridaCortante">Herida Cortante</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="fracExp" value="3" name="fracExp">
+                        <label class="form-check-label" for="fracExp">Fractura Expuesta</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="fracCerr" value="4" name="fracCerr">
+                        <label class="form-check-label" for="fracCerr">Fractura Cerrada</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="cuerpoExtrano" value="5" name="cuerpoExtrano">
+                        <label class="form-check-label" for="cuerpoExtrano">Cuerpo Extrano</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="hemorragia" value="6" name="hemorragia">
+                        <label class="form-check-label" for="hemorragia">Hemorragia</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="mordedura" value="7" name="mordedura">
+                        <label class="form-check-label" for="mordedura">Mordedura</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="picadura" value="8" name="picadura">
+                        <label class="form-check-label" for="picadura">Picadura</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="excoriacion" value="9" name="excoriacion">
+                        <label class="form-check-label" for="excoriacion">Excoriacion</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="defMaz" value="10" name="defMaz">
+                        <label class="form-check-label" for="defMaz">Deformidad o Maza</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="hematoma" value="11" name="hematoma">
+                        <label class="form-check-label" for="hematoma">Hematoma</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="eritema" value="12" name="eritema">
+                        <label class="form-check-label" for="eritema">Eritema / Inflamacion</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="luxacion" value="13" name="luxacion">
+                        <label class="form-check-label" for="luxacion">Luxacion/Esguince</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="quemadura" value="14" name="quemadura">
+                        <label class="form-check-label" for="quemadura">Quemadura</label>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="extremidades">Datalle</label>
+                            <textarea type="text" class="form-control" name="detalle" id="detalle" cols="100%" rows="10" placeholder="Detalle la localización de cada lesión"></textarea>
+                        </div>
+                    </div>
+                    <!-- <img src="body.PNG" style=" margin: auto;"> -->
+
+                </div>
+                <div class="card-header bg-info" style="text-align: center;">
+                    <h4 class="display-6 ">
+                        SOLICITUD DE EXAMENES
+                    </h4>
+                </div>
+                <div class="card-body ">
+
+
+                    <div class="form-check form-check-inline col-md-3">
+                        <input class="form-check-input" type="checkbox" id="biometria" value="1" name="biometria">
+                        <label class="form-check-label" for="biometria">Biometria</label>
+                    </div>
+                    <div class="form-check form-check-inline col-md-3">
+                        <input class="form-check-input" type="checkbox" id="quimSang" value="2" name="quimSang">
+                        <label class="form-check-label" for="quimSang">Quimica Sanguinea</label>
+                    </div>
+                    <div class="form-check form-check-inline col-md-3">
+                        <input class="form-check-input" type="checkbox" id="gasometria" value="3" name="gasometria">
+                        <label class="form-check-label" for="gasometria">Gasometria</label>
+                    </div>
+                    <div class="form-check form-check-inline col-md-3">
+                        <input class="form-check-input" type="checkbox" id="tomografia" value="4" name="tomografia">
+                        <label class="form-check-label" for="tomografia">Tomografia</label>
+                    </div>
+
+                </div>
+
+                <div class="card-header bg-info" style="text-align: center;">
+                    <h4 class="display-6 ">
+                        DIAGNÓSTICO DE INGRESO
+                    </h4>
+                </div>
+                <div class="card-body ">
+
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="diagnostico">Diagnostico</label>
+                            <select id="diagnostico" class="custom-select" name="diagnostico">
+                                <option selected>Escoja</option>
+                                <option value="1">Presuntivo</option>
+                                <option value="2">Definitivo</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <input type='file' name='file' onchange="readURL(this);" />
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>
