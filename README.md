@@ -33,9 +33,8 @@ Descripción del Servidor
                                         'covid-19': 0.90,
                                         'Pneumonia': 0.8,
                                         'Normal image': 0.2
-
+										}
         -@app.route('/listado', methods=['GET', 'POST']): En esta ruta, se mostrarán un listado con todos los usuarios que han  usado esta
         plataforma, cada uno con un respectivo resumén de toda la información subida.. 
-}
 3) Link Youtube
 	https://youtu.be/DgBVt51vTpg
